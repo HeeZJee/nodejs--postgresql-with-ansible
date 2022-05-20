@@ -1,0 +1,22 @@
+[Unit]
+Description=NodeJS server, NextJS public frontend
+After=network.target
+
+[Service]
+Environment="PATH={{ ansible_env.HOME }}/.nvm/versions/node/{{ node_version }}/bin:$PATH"
+Environment="PATH=/usr/bin/git:$PATH"
+Environment="DATABASE_URL={{ database_url }}"
+Environment="HASH_SALT={{ hash_salt }}"
+StandardOutput=file:/home/log/{{ app_user }}/{{ app_name }}/output.log
+StandardError=file:/home/log/{{ app_user }}/{{ app_name }}/error.log
+SyslogIdentifier={{ app_name }}
+User={{ app_user }}
+Group={{ app_user }}
+WorkingDirectory=/home/{{ app_user }}/{{ app_name }}/
+ExecStartPre=/usr/bin/git pull
+ExecStartPre=/home/{{ app_user }}/.nvm/versions/node/{{ node_version }}/bin/npm install
+ExecStartPre=/home/{{ app_user }}/.nvm/versions/node/{{ node_version }}/bin/npm run build
+ExecStart=/home/{{ app_user }}/.nvm/versions/node/{{ node_version }}/bin/npm start
+
+[Install]
+WantedBy=multi-user.target

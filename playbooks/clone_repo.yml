@@ -1,0 +1,19 @@
+- name: Clone App Repository
+  hosts: umami_host
+  vars_files:
+    - vars/main.yml
+  
+  tasks:
+  - name: Create {{ repo_path }} directory for {{app_name}}
+    file:
+      path: "{{ app_name }}"
+      state: directory
+      owner: "{{ansible_env.USER}}"
+      group: "{{ansible_env.USER}}"
+      mode: 0775
+  
+  - name: Cloning a {{app_name}} repository
+    git:
+     repo: "{{ git_repo_url }}"
+     dest: "{{ app_name }}"
+     version: "{{ repo_branch }}"

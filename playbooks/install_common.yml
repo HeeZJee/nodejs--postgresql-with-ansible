@@ -1,0 +1,14 @@
+- name: install Common APT Packages
+  hosts: umami_host
+  become: true
+  tasks:
+    - name: Install packages and update
+      apt:
+        update_cache: yes
+        name:
+          - wget
+          - curl
+          - git
+          - python3-psycopg2
+          - acl
+        state: present

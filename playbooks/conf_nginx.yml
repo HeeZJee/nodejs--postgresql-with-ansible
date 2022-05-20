@@ -1,0 +1,26 @@
+- name:  Configure Nginx {{ server_name }} app
+  hosts: umami_host
+  vars_files:
+    - vars/main.yml
+
+  become: true
+  tasks:
+  - name: Create nginx virtual host
+    template:
+      src: umami.conf.j2
+      dest: "/etc/nginx/sites-enabled/{{ server_name }}"
+    notify:
+      - Restart Nginx
+
+  - name: Enable new site
+    file:
+      src: /etc/nginx/sites-enabled/{{ server_name }}
+      dest: /etc/nginx/sites-available/{{ server_name }}
+      state: link
+    notify: Restart Nginx
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

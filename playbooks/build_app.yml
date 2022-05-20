@@ -1,0 +1,23 @@
+- name: Build {{app_name}} Application
+  hosts: umami_host
+  become: true
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+  - name: Install packages based on package.json using the npm
+    npm:
+        path: "{{ app_name }}"
+        state: present
+    environment: 
+      PATH: > 
+        {{ ansible_env.HOME }}/.nvm/versions/node/{{ node_version }}/bin:$PATH
+
+  - name: Build app
+    command: npm run build
+    args:
+      chdir: "{{ ansible_env.HOME }}/{{app_name}}"
+    environment: 
+      PATH: "{{ ansible_env.HOME }}/.nvm/versions/node/{{ node_version }}/bin:$PATH"
+      DATABASE_URL: "{{ database_url }}"
+      HASH_SALT: "{{ hash_salt }}"

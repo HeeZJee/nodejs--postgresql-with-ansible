@@ -1,0 +1,11 @@
+app_name: umami
+server_name: umami.example.com
+git_repo_url: https://github.com/mikecao/umami.git
+repo_branch: master
+pg_version: 14
+node_version: v14.17.0
+pg_script_path: ~/umami/sql/schema.postgresql.sql
+app_user: <TARGET_HOST_USER>
+database_name: umami_db
+database_url: postgres://localhost:5432/umami_db
+hash_salt: 4789432361

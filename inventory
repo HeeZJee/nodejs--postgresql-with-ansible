@@ -1,0 +1,2 @@
+[umami_host]
+umami_app ansible_ssh_host=<TARGET_HOST_IP> ansible_user=<TARGET_HOST_USER>

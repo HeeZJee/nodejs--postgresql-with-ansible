@@ -1,0 +1,15 @@
+---
+- name: Install Nginx
+  hosts: umami_host
+  become: true
+  tasks:
+  - name: Make sure Nginx is installed
+    apt:
+      name: nginx
+      state: present
+  
+  - name: Make sure Nginx is running
+    service:
+      name: nginx
+      state: started
+      enabled: yes

@@ -1,0 +1,25 @@
+- name: Start and Deploy {{ app_name }} app via systemd configuration
+  hosts: umami_host
+  vars_files:
+    - vars/main.yml
+
+  become: true
+  tasks:
+    - name: Create {{ app_name }} service
+      template:
+        src: umami.service.j2
+        dest: "/etc/systemd/system/{{ app_name }}.service"
+      notify:
+        - Restart {{ app_name }} service
+
+    - name: Make sure {{ app_name }} is running via systemd
+      service:
+        name: "{{ app_name }}"
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart {{ app_name }} service
+      service:
+        name: "{{ app_name }}"
+        state: restarted
